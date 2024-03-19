@@ -1,0 +1,100 @@
+CREATE TABLE `Customers`
+(
+    `Id` Uint64, 
+    `LastName` Utf8 NOT NULL,
+    `FirstName` Utf8 NOT NULL,
+    `MiddleName` Utf8 NOT NULL,
+    `Phone` Utf8 NOT NULL,
+    PRIMARY KEY (`Id`)
+);
+CREATE TABLE `Products`
+(
+    `Id` Uint64,
+    `Name` Utf8 NOT NULL,
+    `Price` Uint64 NOT NULL,
+    PRIMARY KEY (`Id`)
+);
+CREATE TABLE `Orders`
+(
+    `Id` Uint64,
+    `Condition` Utf8 NOT NULL,
+    `QuantityProduct` Uint64 NOT NULL,
+    `Price` Uint64 NOT NULL,
+    PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `OrdersProducts`
+(
+    `OrderId` Uint64 NOT NULL,
+    `ProductId` Uint64 NOT NULL,   
+    `QuantityProduct` Uint64 NOT NULL,
+    `PriceProducts` Uint64 NOT NULL,
+    PRIMARY KEY(`OrderId`, `ProductId`)
+);
+
+CREATE TABLE `ProductsReport`
+(
+    `Id` Uint64 NOT NULL,
+    `Name` Utf8 NOT NULL,  
+    `MayBeDeliveredProduct` Uint64 NOT NULL,
+    `PriceProducts` Uint64 NOT NULL,
+    `TotalOrderedProduct` Uint64 NOT NULL,
+    PRIMARY KEY(`Id`)
+);
+CREATE TABLE `CustomersReport`
+(
+    `Id` Uint64 NOT NULL,
+    `LastName` Utf8 NOT NULL,
+    `FirstName` Utf8 NOT NULL,
+    `MiddleName` Utf8 NOT NULL,
+    `Payed` Uint64 NOT NULL,
+    `Delivered` Uint64 NOT NULL,
+    `Cancelled` Uint64 NOT NULL,
+    PRIMARY KEY(`Id`)
+);
+
+
+UPSERT INTO `Customers` ( `Id`, `LastName`, `FirstName`, `MiddleName`, `Phone` )
+VALUES ( 1, 'Петров', 'Александр', 'Петрович', '+79885654525' ),
+( 2, 'Шевцов', 'Михаил', 'Павлович', '+79284321245' ),
+(3, 'Васильева', 'Екатерина', 'Степановна', '+79562321235'),
+(4, 'Королев', 'Илья', 'Матвеевич', '+79885654411'),
+(5, 'Никифорова', 'Алиса', 'Александровна', '+79226455654');
+
+
+UPSERT INTO `Products` ( `Id`, `Name`, `Price` )
+VALUES ( 1, 'Ноутбук', 35000 ),
+( 2, 'Телевизор', 67900 ),
+(3, 'Часы', 3700),
+(4, 'Телефон', 12500),
+(5, 'Весы', 2300),
+(6, 'Игровая консоль', 49999);
+
+UPSERT INTO `OrdersProducts` ( `OrderId`, `ProductId`, `QuantityProduct`, `PriceProducts` )
+VALUES (1, 1, 2, 70000),
+(1, 2, 1, 67900),
+(2, 2, 2, 135800),
+(2, 3, 2, 7400),
+(4, 1, 1, 35000),
+(4, 4, 3, 37500),
+(5, 1, 2, 70000),
+(6, 2, 1, 67900),
+(6, 5, 2, 4600),
+(7, 5, 1, 2300),
+(8, 4, 1, 12500);
+
+UPSERT INTO `CustomersReport` ( `Id`, `LastName`, `FirstName`,`MiddleName`,`Payed`,`Delivered`,`Cancelled`  )
+VALUES ( 1, 'Петров', 'Александр', 'Петрович', 70000, 35000, 0 ),
+( 2, 'Шевцов', 'Михаил', 'Павлович', 135500, 135500, 0  ),
+(3, 'Васильева', 'Екатерина', 'Степановна', 0, 0, 37500 ),
+(4, 'Королев', 'Илья', 'Матвеевич', 35000, 35000, 37500 ),
+(5, 'Никифорова', 'Алиса', 'Александровна', 6900, 4600, 2300 );
+UPSERT INTO `ProductsReport` ( `Id`, `Name`, `MayBeDeliveredProduct`, `PriceProducts`, `TotalOrderedProduct`)
+VALUES ( 1, 'Ноутбук', 1, 35000, 3 ),
+( 2, 'Телевизор',2, 135800, 3 ),
+( 3, 'Часы',4, 14800, 7 ),
+( 4, 'Весы', 1, 3500, 2 ),
+( 5, 'Игровая консоль', 0, 0, 0 );
+
+
+
